@@ -1,0 +1,56 @@
+@font-face {
+	font-family:'Maison Neue';
+	src:url("../fonts/MaisonNeue-BookItalic.eot");
+	src:url("../fonts/MaisonNeue-BookItalic.eot?#iefix") format("embedded-opentype"), url("../fonts/MaisonNeue-BookItalic.woff") format("woff"), url("../fonts/MaisonNeue-BookItalic.ttf") format("truetype");
+	font-weight:normal;
+	font-style:italic
+}
+@font-face {
+	font-family:'Maison Neue';
+	src:url("../fonts/MaisonNeue-LightItalic.eot");
+	src:url("../fonts/MaisonNeue-LightItalic.eot?#iefix") format("embedded-opentype"), url("../fonts/MaisonNeue-LightItalic.woff") format("woff"), url("../fonts/MaisonNeue-LightItalic.ttf") format("truetype");
+	font-weight:300;
+	font-style:italic
+}
+@font-face {
+	font-family:'Maison Neue';
+	src:url("../fonts/MaisonNeue-Book.eot");
+	src:url("../fonts/MaisonNeue-Book.eot?#iefix") format("embedded-opentype"), url("../fonts/MaisonNeue-Book.woff") format("woff"), url("../fonts/MaisonNeue-Book.ttf") format("truetype");
+	font-weight:normal;
+	font-style:normal
+}
+@font-face {
+	font-family:'Maison Neue';
+	src:url("../fonts/MaisonNeue-MediumItalic.eot");
+	src:url("../fonts/MaisonNeue-MediumItalic.eot?#iefix") format("embedded-opentype"), url("../fonts/MaisonNeue-MediumItalic.woff") format("woff"), url("../fonts/MaisonNeue-MediumItalic.ttf") format("truetype");
+	font-weight:500;
+	font-style:italic
+}
+@font-face {
+	font-family:'Maison Neue';
+	src:url("../fonts/MaisonNeue-Medium.eot");
+	src:url("../fonts/MaisonNeue-Medium.eot?#iefix") format("embedded-opentype"), url("../fonts/MaisonNeue-Medium.woff") format("woff"), url("../fonts/MaisonNeue-Medium.ttf") format("truetype");
+	font-weight:500;
+	font-style:normal
+}
+@font-face {
+	font-family:'Maison Neue';
+	src:url("../fonts/MaisonNeue-Bold.eot");
+	src:url("../fonts/MaisonNeue-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/MaisonNeue-Bold.woff") format("woff"), url("../fonts/MaisonNeue-Bold.ttf") format("truetype");
+	font-weight:bold;
+	font-style:normal
+}
+@font-face {
+	font-family:'Maison Neue';
+	src:url("../fonts/MaisonNeue-BoldItalic.eot");
+	src:url("../fonts/MaisonNeue-BoldItalic.eot?#iefix") format("embedded-opentype"), url("../fonts/MaisonNeue-BoldItalic.woff") format("woff"), url("../fonts/MaisonNeue-BoldItalic.ttf") format("truetype");
+	font-weight:bold;
+	font-style:italic
+}
+@font-face {
+	font-family:'Maison Neue';
+	src:url("../fonts/MaisonNeue-Light.eot");
+	src:url("../fonts/MaisonNeue-Light.eot?#iefix") format("embedded-opentype"), url("../fonts/MaisonNeue-Light.woff") format("woff"), url("../fonts/MaisonNeue-Light.ttf") format("truetype");
+	font-weight:300;
+	font-style:normal
+}

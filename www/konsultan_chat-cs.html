@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	<title>d'Fun Station</title>
+	<meta content="IE=edge" http-equiv="x-ua-compatible">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="yes" name="apple-touch-fullscreen">
+
+	<!-- Fonts -->
+	<!-- Styles -->
+	<link href="css/keyframes.css" rel="stylesheet" type="text/css">
+	<link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+	<link href="css/swiper.css" rel="stylesheet" type="text/css">
+	<link href="css/style1.css" rel="stylesheet" type="text/css">
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script type="text/javascript">
+
+		var url = window.location.pathname;
+		var filename = url.substring(url.lastIndexOf('/') + 1);
+
+
+		if (localStorage.login == "true" && filename == 'login.html') {
+			window.location.href = "index.html";
+			var userfullname = localStorage.userfullname;
+		} else if (localStorage.login == null) {
+			window.location.href = "login.html";
+		} else if (localStorage.login == "false" && filename != 'login.html') {
+			window.location.href = "login.html";
+		}
+	</script>
+	<script src="js/sweetalert.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			var chatid = getvar("chatid");
+			var us = getvar("userid");
+			var urls = "https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-start/" + chatid + "/" + localStorage.userid + "/?callback=?";
+			//var end ="javascript:fade(\'konsultan_chat-finish-cs.html?action=finish&chatid="+chatid+"&userid="+us+"\')";
+			$.ajax({
+				type: "GET",
+				url: urls,
+				crossDomain: true,
+				cache: false,
+				success: function (data) {
+					if (data['status'] == "OK") {
+						$("#avatar").attr("src", data['avatar']);
+						$("#kons").html(data['konsultan']);
+						$("#name-area").html(data['create']);
+						//$("#end").attr("href",end);
+						$(".templates").html(data['text']);
+						if (data['paid'] < 1) {
+							//alert(data['midtrans']);
+							if (data['midtrans'] == "pending") {
+								swal("Pembayaran untuk sesi konsultasi ini belum selesai, silakan tunggu pembayaran diselesaikan oleh klien.", {
+									buttons: {
+										//cancel: "Lain Kali",
+										catch: {
+											text: "Tunggu Pembayaran",
+											value: "catch",
+										}
+									},
+									closeOnClickOutside: false,
+									closeOnEsc: false,
+									allowOutsideClick: false,
+								})
+									.then((value) => {
+										switch (value) {
+											case "catch":
+												//alert('bayar');
+												window.location.href = 'konsultan_chat.html';
+												//window.location.href= 'voucher-buy.html?chatid='+chatid+'&userid='+localStorage.userid;
+												break;
+											default:
+										}
+									});
+							} else if (data['midtrans'] == "expire") {
+								swal("Pembayaran untuk sesi konsultasi ini sudah Expire, silakan tunggu konsultasi baru.", {
+									buttons: {
+										//cancel: "Lain Kali",
+										catch: {
+											text: "Tunggu Konsultasi Baru",
+											value: "catch",
+										}
+									},
+									closeOnClickOutside: false,
+									closeOnEsc: false,
+									allowOutsideClick: false,
+								})
+									.then((value) => {
+										switch (value) {
+											case "catch":
+												//alert('bayar');
+												window.location.href = 'konsultan_chat.html';
+												break;
+											default:
+										}
+									});
+							} else if (data['midtrans'] == "capture" || data['midtrans'] == "settlement") {
+								swal("Pembayaran untuk sesi konsultasi ini telah berhasil, silakan lanjutkan konsultasi.", {
+									buttons: {
+										//cancel: "Lain Kali",
+										catch: {
+											text: "Lanjutkan Konsultasi",
+											value: "catch",
+										}
+									},
+									closeOnClickOutside: false,
+									closeOnEsc: false,
+									allowOutsideClick: false,
+								})
+									.then((value) => {
+										switch (value) {
+											case "catch":
+												//alert('bayar');
+												//window.location.href= 'konsul.html';
+												break;
+											default:
+										}
+									});
+							}
+						}
+					}
+				}
+			});
+
+		});
+		function endchat() {
+			var chatid = getvar("chatid");
+			var us = getvar("userid");
+			swal("Anda yakin akan mengakhiri sesi konsultasi ini?", {
+				buttons: {
+					cancel: "Tidak",
+					catch: {
+						text: "Ya, Akhiri Sesi Konsultasi",
+						value: "catch",
+					}
+				},
+				closeOnClickOutside: false,
+				closeOnEsc: false,
+				allowOutsideClick: false,
+			})
+				.then((value) => {
+					switch (value) {
+						case "catch":
+							//alert('bayar');
+							//window.location.href= 'chat.html';
+							window.location.href = 'konsultan_chat-finish-cs.html?action=finish&chatid=' + chatid + '&userid=' + us;
+							break;
+						default:
+					}
+				});
+		}
+		function modalx(identifier) {
+			document.getElementById("myModal").style.display = "block";
+			var link = $(identifier).data("link");
+			$("#imgx").attr("src", link);
+			var openx = "javascript:window.open('" + link + "', '_system', 'location=yes')";
+			$("#dnx").attr("href", openx);
+		}
+
+		function modalc() {
+			document.getElementById("myModal").style.display = "none";
+			$("#imgx").attr("src", "");
+			$("#dnx").attr("href", "");
+		}
+	</script>
+	<script type="text/javascript" src="js/iscroll.js"></script>
+	<script type="text/javascript" src="js/main-chat-cs.js"></script>
+	<style>
+		.modalx {
+			display: none;
+			/* Hidden by default */
+			position: fixed;
+			/* Stay in place */
+			z-index: 1;
+			/* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%;
+			/* Full width */
+			height: 100%;
+			/* Full height */
+			overflow: auto;
+			/* Enable scroll if needed */
+			background-color: rgb(0, 0, 0);
+			/* Fallback color */
+			background-color: rgba(0, 0, 0, 0.8);
+			z-index: 9999;
+		}
+
+		/* Modal Content/Box */
+		.modal-contentx {
+			margin: 0% auto;
+			/* 15% from the top and centered */
+			padding: 0px;
+			width: 95%;
+			/* Could be more or less, depending on screen size */
+		}
+
+		/* The Close Button */
+		.close {
+			color: #fff;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: #aaa;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="m-scene" id="main">
+
+
+		<!-- Page Content -->
+		<div id="content" class="grey-blue page"
+			style="margin-top:0px !important;padding-top:56px;background: #efe7dd url('img/wa.jpg') repeat;background-size: cover;">
+
+			<!-- Toolbar -->
+			<div id="toolbar" class="primary-color">
+				<a onclick="javascript:window.history.back();" class="open-left waves-effect waves-circle">
+					<i class="fal fa-arrow-left"></i>
+				</a>
+				<img id="avatar" class="circle avatar" src="img/avatar.png" alt="" style="margin-top:5px;float:left" />
+				<span id="kons"
+					style="margin-left:10px;color:white;font-size:18px;font-weight:bold;line-height:50px">Chat</span>
+				<div class="open-right waves-effect waves-circle">
+					<a href="#" onclick="endchat()" class="waves-effect waves-circle"><i
+							class="fal fa-sign-out"></i></a>
+				</div>
+				<div class="open-right waves-effect waves-circle">
+					<a href="#" onclick="updateChatx()" class="waves-effect waves-circle"><i
+							class="fal fa-sync"></i></a>
+				</div>
+			</div>
+
+			<!-- Main Content -->
+
+			<!-- Main Content -->
+			<div class="animated fadeinup">
+				<div class="row">
+					<div class="col s12">
+
+
+						<p id="name-area" style="padding:5px;text-align:center;font-weight:bold;margin:0px !important">
+						</p>
+
+						<div id="chat-wrap">
+							<div class="chat">
+								<ul id="chat-area" class="chat-area" style="padding-bottom:50px !important"></ul>
+								<div id="load_data_message" style="position:fixed;bottom:50%;width:100%;display:none">
+									<div class="loading">
+										<center><img src="img/loading.svg" /></center>
+									</div>
+								</div>
+								<div id="load_data_message2">
+									<div class="loading">
+										<center><img src="img/loading.svg" /></center>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+
+
+
+
+		</div><br><br>
+		<div id="attach" class="animated fadeinup" style="display:none">
+			<div id="foto" style="display:none" class="animated fadeindown">
+				<img src="" id='img' style="width: 100%; height: auto; border-radius:10px">
+				<br />
+				<input type="hidden" name="isimage_" id="isimage_" value="0">
+				<span id="kirim_" style="text-center"></span>
+			</div>
+			<div id="audiox" style="display:none" class="animated fadeindown">
+				<div class="rekaman"></div>
+				<br />
+				<input type="hidden" name="isimage" id="isimage" value="0">
+				<span id="kirim" style="text-center"></span>
+			</div>
+			<div id="templatex" style="display:none" class="animated fadeindown">
+				<div class="templates"></div>
+			</div>
+			<div id="tools">
+				<button
+					class="waves-effect waves-light btn-large accent-color m-b-20 button button-block button-positive"
+					id="but_take_">Kamera</button>
+				<button
+					class="waves-effect waves-light btn-large accent-color m-b-20 button button-block button-positive"
+					id="but_select_">Galeri Foto</button>
+				<button
+					class="waves-effect waves-light btn-large accent-color m-b-20 button button-block button-positive"
+					id="but_take">Rekam Audio</button>
+				<button
+					class="waves-effect waves-light btn-large accent-color m-b-20 button button-block button-positive"
+					id="but_select">File Audio</button>
+			</div>
+		</div>
+		<div class="steps-controllers chatbottom">
+			<div id="default" style="width:100%" class="animated fadeindown">
+				<div class="chat-input">
+					<textarea id="sendie" class="resize-ta" maxlength="1000"
+						placeholder="Tulis pesan disini"></textarea>
+				</div>
+				<div class="chat-input-image" id="sendx" style="display:none;">
+					<a href="#" class="waves-ripple waves-effect animated fadeindown" id="sends"
+						style="color:#fff;background-color: rgb(102, 152, 32);"><i class="fal fa-paper-plane"></i></a>
+				</div>
+				<div class="chat-input-image">
+					<a href="#" class="waves-ripple waves-effect animated fadeinup" onclick="attach()" id="attachs"><i
+							class="fal fa-paperclip"></i></a>
+				</div>
+				<div class="chat-input-image">
+					<a href="#" class="waves-ripple waves-effect animated fadeindown" onclick="attachx()" id="attachx"
+						style="display:none"><i class="fal fa-times"></i></a>
+				</div>
+			</div>
+		</div> <!-- End of Page Container -->
+
+		<script>
+			$(document).ready(function () {
+				var h = $(window).innerHeight();
+				var tinggi = h - 132;
+				$("#chat-area").height(tinggi);
+			});
+		</script>
+
+		<script type='text/javascript'>
+			$(document).ready(function () {
+				$('#but_template').click(function () {
+					$("#templatex").show();
+					$("#tools").hide();
+				});
+
+				$('#but_take_').click(function () {
+					navigator.camera.getPicture(onSuccess, onFail, {
+						quality: 50,
+						destinationType: Camera.DestinationType.FILE_URL
+					});
+				});
+
+				$("#but_select_").click(function () {
+					navigator.camera.getPicture(onSuccess, onFail, {
+						quality: 50, correctOrientation : true,
+						sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+						allowEdit: true,
+						destinationType: Camera.DestinationType.FILE_URI
+					});
+				});
+
+				// Change image source
+				function onSuccess(imageData) {
+					var image = document.getElementById('img');
+					if (imageData.startsWith("content://")) {
+						window.FilePath.resolveNativePath(imageData, function (localFileUri) {
+							$("#img").attr("src", localFileUri + '?' + Math.random());
+							if (localFileUri !== "") {
+								$("#foto").show();
+								$("#tools").hide();
+								$("#sendx").show();
+							}
+						});
+					} else {
+						$("#img").attr("src", imageData + '?' + Math.random());
+						if (imageData !== "") {
+							$("#foto").show();
+							$("#tools").hide();
+							$("#sendx").show();
+						}
+					}
+					$("#isimage_").val("1");
+				}
+
+				function onFail(message) {
+					swal('Gagal mengambil gambar: ' + message);
+				}
+			});
+		</script>
+
+		<script type='text/javascript'>
+			$(document).ready(function () {
+				function audioCapture() {
+					var options = {
+						limit: 1,
+						duration: 300
+					};
+					navigator.device.capture.captureAudio(onSuccess, onError, options);
+
+					function onSuccess(mediaFiles) {
+						var i, path, len;
+						for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+							path = mediaFiles[i].fullPath;
+							$(".rekaman").html('<audio controls><source src="' + path + '" type="audio/mp4" id="audio">Your browser does not support the video tag.</audio></div>');
+							$("#audiox").show();
+							$("#tools").hide();
+							$("#sendx").show();
+							$("#isimage").val("1");
+						}
+					}
+
+					function onError(error) {
+						navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+					}
+				}
+				$('#but_take').click(function () {
+					audioCapture();
+				});
+			});
+
+			$("#but_select").click(function () {
+				navigator.camera.getPicture(onSuccess, onFail, {
+					quality: 100,
+					destinationType: Camera.DestinationType.FILE_URI,
+					sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+					mediaType: Camera.MediaType.ALLMEDIA
+				});
+			});
+
+			function onSuccess(imageData) {
+				$(".rekaman").html('<audio controls><source src="' + imageData + '" type="audio/mp4" id="audio">Your browser does not support the video tag.</audio></div>');
+				$("#audiox").show();
+				$("#tools").hide();
+				$("#sendx").show();
+				$("#isimage").val("1");
+			}
+
+			function onFail(message) {
+				swal('Gagal mengambil Audio, ' + message);
+			}	
+		</script>
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script src="js/jquery.swipebox.min.js"></script>
+		<script src="js/jquery.smoothState.min.js"></script>
+		<script src="js/materialize.min.js"></script>
+		<script src="js/swiper.min.js"></script>
+		<script src="js/jquery.mixitup.min.js"></script>
+		<script src="js/masonry.min.js"></script>
+		<script src="js/chart.min.js"></script>
+		<script src="js/functions.js"></script>
+		<div id="myModal" class="modalx">
+			<!-- Modal content -->
+			<div class="modal-contentx">
+				<a href="" class="close" id="dnx" style="float:left"><i class="fal fa-download"></i></a><span
+					class="close" onclick="modalc()"><i class="fal fa-times"></i></span>
+				<img src="" id="imgx">
+			</div>
+
+		</div>
+</body>
+
+</html>

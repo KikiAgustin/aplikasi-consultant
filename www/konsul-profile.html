@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>d'Fun Station</title>
+    <meta content="IE=edge" http-equiv="x-ua-compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <!-- Fonts -->
+    <!-- Styles -->
+    <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+    <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+    <link href="css/swiper.css" rel="stylesheet" type="text/css">
+    <link href="css/style1.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery-3.6.0.min.js"></script>
+	      <script src="js/fastclick.js"></script>
+	<script type="text/javascript">    
+	var url = window.location.pathname;
+    var filename = url.substring(url.lastIndexOf('/') + 1);
+	
+ 
+    if (localStorage.login == "true" && filename == 'login.html') {
+        window.location.href = "index.html";
+		var userfullname = localStorage.userfullname;
+    } else if (localStorage.login == null) {
+        window.location.href = "login.html";
+    } else if (localStorage.login == "false" && filename != 'login.html') {
+        window.location.href = "login.html";
+    }
+	</script>
+   <script src="js/sweetalert.min.js"></script> <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/iscroll.js"></script>
+	
+</head>
+  <body>
+    <div class="m-scene" id="main">  
+      <!-- Page Content -->
+      <div id="content" class="grey-blue page">
+
+        <!-- Toolbar -->
+        <div id="toolbar"  class="primary-color">
+           <a onclick="javascript:history.back()" class="open-left waves-effect waves-circle">
+            <i class="fal fa-arrow-left"></i>
+          </a>
+           <span class="title">Profil Konsultan</span>
+        </div>
+       
+        
+          <div class="box-profile animated fadein">
+          	<div class="p-10">
+            	<div class="box-imgbox">
+                <br>
+                <center>
+					     <img id="avatar" class="circle avatar" src="img/avatar.png" alt="" style="width:150px; height:150px;" />
+               
+                <h3 id="userfullname"></h3>
+                </center>
+                <br>
+                </div>
+            </div>
+          </div>
+          <div class="animated fadeIn">
+          	<div class="p-20 profile">
+            	<div class="profile-item">
+                    <strong>Nama Lengkap</strong><br>
+                    <span id="userfullname1"></span>
+                </div>
+                <div class="profile-item">
+                    <strong>Profesi - Specialis</strong><br>
+                    <span id="usersec"></span>
+                </div>
+                <div class="profile-item">
+                    <strong>Tentang</strong><br>
+                    <span id="userabout"></span>
+                </div>
+                
+            </div>
+          </div>
+          
+          <br><br>
+            <div class="steps-controllers">
+              <div class="chat-harga">&nbsp;</div>
+              <div class="chat-me">
+              </div>
+			 <script> 
+			function sendchat()
+			{
+				swal("Apakah anda yakin akan berkonsultasi atau chat dengan konsultan/dokter ini?", {
+				  buttons: {
+					cancel: "Batal",
+					catch: {
+					  text: "Ya, Chat Sekarang",
+					  value: "catch",
+					}
+				  },
+				})
+				.then((value) => {
+				  switch (value) {
+				 
+					case "catch":	
+					
+					  var userid = getvar("userid");
+			 		  var username = getvar("username");				  
+					  
+					  var urls ="https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-create/"+localStorage.userid+"/"+userid+"/?callback=?";
+					  $.ajax({
+						  type: "GET",
+						  url: urls,
+						  crossDomain: true,
+						  cache: false,
+						  success: function(data){
+							
+							  if(data['status']=="OK")
+							  {
+								  if(data['harga']<1)
+								  {
+								  	slide("readterm.html?chatid="+data['chat_id']+"&userid="+userid);
+								  }
+								  else
+								  {
+									  if(data['paid']<1)
+									  {
+											localStorage.chatid = data['chat_id'];
+											slide("chat-bayar.html?chatid="+data['chat_id']);
+									  }
+									  else
+									  {
+											slide("chat-start.html?chatid="+data['chat_id']+"&userid="+userid);
+									  }
+								  }
+							  }
+							 
+						  }
+					  });
+					  
+					  
+					  break;
+				 
+					default:
+					 
+				  }
+				});
+				//fade('chat-mulai.html?action=read&userid="+userid+"'
+			}
+			
+			 var userid = getvar("userid");
+			 var username = getvar("username");
+			 
+       		 $(document).ready(function(){
+					
+					
+					$(".chat-me").html("<button class=\"btn btn-warning\" onclick=\"sendchat();\">Chat</button>");
+					
+					if(userid>0)
+					{
+						var urls ="https://www.dfunstation.com/api4/consultant/index.php/konsultasi/profile/"+userid+"/userid/?callback=?";
+					}
+					else if(username!="")
+					{
+						var urls ="https://www.dfunstation.com/api4/consultant/index.php/konsultasi/profile/"+username+"/username/?callback=?";
+					}
+					
+					$.ajax({
+					  type: "GET",
+					  url: urls,
+					  crossDomain: true,
+					  cache: false,
+					  success: function(data){
+						  if(data['status']=="OK")
+						  {
+							$("#avatar").attr("src",data['avatar']);
+							$("#userfullname").html(data['userfullname']);
+							$("#userfullname1").html(data['userfullname']);
+							$("#userabout").html(data['userabout']);
+							$("#usersec").html(data['sec']);
+							
+							if(data['harga']>0) $(".chat-harga").html("Mulai dengan <br><b>Rp. "+data['hargarp']+"</b>");
+							else $(".chat-harga").html("Konsultasi <strong>Gratis</strong> Sekarang");
+
+						  }
+					 }
+				  });
+			
+			 
+			});
+			</script>
+       </div>
+ </div> <!-- End of Page Container -->
+    
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <!-- <script src="js/jquery.swipebox.min.js"></script>    -->
+    <script src="js/jquery.smoothState.min.js"></script> 
+    <script src="js/materialize.min.js"></script> 
+    <script src="js/swiper.min.js"></script>  
+    <script src="js/jquery.mixitup.min.js"></script>
+    <script src="js/functions.js"></script>
+  </body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>d'Fun Station</title>
+    <meta content="IE=edge" http-equiv="x-ua-compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <!-- Fonts -->
+    <!-- Icons -->
+
+    <!-- Styles -->
+    <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+    <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+    <link href="css/swiper.css" rel="stylesheet" type="text/css">
+    <link href="css/style1.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script type="text/javascript">
+    var url = window.location.pathname;
+    var filename = url.substring(url.lastIndexOf('/') + 1);
+ 
+    if(localStorage.tour == "" || localStorage.tour == null ) {
+        window.location.href = "tour.html";
+    }
+
+     if (localStorage.login == "true" && filename == 'login.html') {
+        window.location.href = "index.html";
+		var userfullname = localStorage.userfullname;
+    } else if (localStorage.login == null) {
+        window.location.href = "login.html";
+    } else if (localStorage.login == "false" && filename != 'login.html') {
+        window.location.href = "login.html";
+    }
+ 	
+	</script>
+   <script type="text/javascript" src="js/iscroll.js"></script>
+   <script type="text/javascript" src="js/main.js"></script>
+  
+	
+</head>
+
+  <body>
+    <div class="m-scene bg-ff" id="main"> <!-- Main Container -->
+
+    
+	
+      <!-- Page Content -->
+      <div id="content">
+
+         <!-- Toolbar -->
+        <div id="toolbar" class="toolbarhome primary-color">
+          
+           <span class="title"> Fun Consultation</span>
+            <div class="open-right waves-effect waves-circle">
+            <a onclick="notifikasi.html" class="waves-effect waves-circle"><i class="fal fa-bell"></i></a>
+          </div>
+        </div>
+		
+       <div id="wrapper">
+          <div id="scroller">
+
+       <div class="homebox">
+       		
+             <div class="menu-profile">
+
+            </div>
+      	
+       </div>
+       
+		
+       <!-- Main Content -->
+        <div class="menukonsulbox animated fadein">
+        	
+            <div class="menukonsul">
+              <div class="menukonsul-judul">
+              	<div class="menukonsul-icon"><i class="fal fa-heart"></i></div>
+              	<strong>Chat Dengan Konsultan</strong><br>
+              	<span>Konsultasikan masalah anda langsung ke konsultan dan dokter.</span>
+              </div>
+              <div class="konsulsec">
+              		<a onclick="konsul.html">Dokter dan Konsultan</a>
+              		<a onclick="konsul-kategori.html" class="active">Kategori Konsultasi</a>
+              		
+              </div>
+              <div class="listkonsultan" id="listkonsultan">
+              		
+              </div>
+
+               <script> 
+		        $(document).ready(function(){
+				
+				
+		 			   var urls ="https://www.dfunstation.com/api4/consultant/index.php/konsultasi/kategori/?callback=?";
+					   
+					  
+					  	$.ajax({
+						  type: "GET",
+						  url: urls,
+						  crossDomain: true,
+						  cache: false,
+						  success: function(data){
+						  
+							  if(data['status']=="OK")
+							  {
+									var datalist = "";
+									var dl = data['section'];
+									var jml = dl.length;
+									 $("#load_data").html("");
+																
+									  for (var key in dl) {
+										if (dl.hasOwnProperty(key)) {
+
+										  datalist += '<span  class="product-sec waves-effect waves-ripple animated fadein"><strong><i class="fal fa-user"></i>  ' + dl[key]["namasec"] + '</strong></span>';
+									 	  var submenu = dl[key]["sub"];
+										 
+											 for (var subkey in submenu) {
+												if (submenu.hasOwnProperty(subkey)) {
+				
+												  	datalist += '<a  class="product-sec waves-effect waves-ripple animated fadein" onclick="javascript:fade(\'konsul-kategori-konsultan.html?action=read&subid='+submenu[subkey]["subid"]+'&secid='+dl[key]["secid"]+'\')">' + submenu[subkey]["namasub"] + ' <i class="fal fa-arrow-right right"></i></a>';
+												}
+											  }
+										  
+										}
+									  }
+									  
+									  $("#listkonsultan").append(datalist);
+																
+									
+																
+							}
+						}
+						
+					  });
+		       
+		         
+		        });
+		        </script>
+
+                
+               
+               
+            </div>
+            </div>
+            
+           
+        
+    
+
+        </div> <!-- End of Main Contents -->
+      
+
+      </div> <!-- End of Page Content -->
+
+ </div> <!-- End of Page Container -->
+
+      <div class="steps-controllers">
+              <div  class="waves-effect waves-ripple"><a onclick="javascript:fade('index.html')" class="active"><span class="menubuttom"><span class="fal fa-home-alt"></span></span><br>Home</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('transaksi.html')"><span class="menubuttom"><span class="fal fa-list-alt"></span></span><br>Transaksi</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('promo.html')"><span class="menubuttom"><span class="fal fa-star"></span></span><br>Promo</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('chat.html')"><span class="menubuttom"><span class="fal fa-comment-alt-lines"></span></span><br>Chat</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('setting.html')"><span class="menubuttom"><span class="fal fa-user"></span></span><br>Akun</a></div>
+       </div>
+
+     
+
+     
+
+    
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <!-- <script src="js/jquery.swipebox.min.js"></script>    -->
+    <script src="js/jquery.smoothState.min.js"></script> 
+    <script src="js/materialize.min.js"></script> 
+    <script src="js/swiper.min.js"></script>  
+    <script src="js/jquery.mixitup.min.js"></script>
+    <script src="js/masonry.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/functions.js"></script>
+    
+  </body>
+</html>

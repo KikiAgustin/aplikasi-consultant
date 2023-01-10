@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>d'Fun Station</title>
+    <meta content="IE=edge" http-equiv="x-ua-compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+
+    <!-- Fonts -->
+    <!-- Styles -->
+    <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+    <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+    <link href="css/swiper.css" rel="stylesheet" type="text/css">
+    <link href="css/style1.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script type="text/javascript">
+    
+	var url = window.location.pathname;
+    var filename = url.substring(url.lastIndexOf('/') + 1);
+	
+    if (localStorage.login == "true" && filename == 'login.html') {
+        window.location.href = "index.html";
+		var userfullname = localStorage.userfullname;
+    } else if (localStorage.login == null) {
+        window.location.href = "login.html";
+    } else if (localStorage.login == "false" && filename != 'login.html') {
+        window.location.href = "login.html";
+    }
+	</script>
+   <script src="js/sweetalert.min.js"></script> <script type="text/javascript" src="js/main.js"></script>
+
+  <script type="text/javascript" src="js/iscroll.js"></script>
+	
+</head>
+
+  <body>
+    <div class="m-scene" id="main">  
+
+    
+      <!-- Page Content -->
+      <div id="content" class="grey-blue page" style="margin-top:0px !important;padding-top:56px;">
+
+        <!-- Toolbar -->
+        <div id="toolbar"  class="primary-color">
+         <a onclick="javascript:fade('index.html');" class="open-left waves-effect waves-circle">
+            <i class="fal fa-arrow-left"></i>
+		</a>
+           <span class="title">Sekolah</span>
+           <div class="open-right waves-effect waves-circle">
+                  <a href="#" onclick="reset('6','0')" class="waves-effect waves-circle"><i class="fal fa-sync"></i></a>
+           </div>
+        </div>
+
+        <div class="tabs">
+        	<div class="tab waves-effect waves-ripple" onClick="javascript:fade('konsultan_sekolah.html');">Aktif</div>
+          <div class="tab tab-active waves-effect waves-ripple" onClick="javascript:fade('konsultan_sekolah_arsip.html');">Arsip</div>
+      <div class="tab waves-effect waves-ripple" onClick="javascript:fade('konsultan_school.html');">Group</div>
+      <div class="tab waves-effect waves-ripple" onClick="javascript:fade('konsultan_mading.html');">Mading</div>
+        </div>
+        
+       
+       		 <div class="listkonsultan">
+                <div id="load_data"></div>
+                <div id="load_data_message"></div>               
+              </div>
+                
+               
+               
+            </div>
+            </div>
+            
+           
+            <script> 
+               function reset(limit, start) {
+                   var urls ="https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-konsultan/"+localStorage.userid+"/"+start+"/"+limit+"/"+1+"/school/?callback=?";
+                    $.ajax({ 
+                    type: "POST",
+                    url: urls,
+                    crossDomain: true,
+                    cache: false,
+                    success: function(data){
+                      if(data['status']=="OK"){
+                        var datalist = "";
+                        var dl = data['datalist'];              
+                        var jml = dl.length;
+                        if(jml>0){
+                          for (var key in dl) {
+                            if (dl.hasOwnProperty(key)) {
+                                datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein" id="'+dl[key]["id"]+'">';
+								if(dl[key]["finish"]==0) { 
+                                	datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-start.html?action=read&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';
+								} else {
+									datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';
+								}
+                                datalist += '<div class="konsultan-item-imgbox"><img src="'+dl[key]["avatar"]+'"></div>';
+                                datalist += '</div>';
+								if(dl[key]["finish"]==0) { 
+                                datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-start.html?action=read&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';
+								} else {
+								datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';	
+								}
+                                datalist += '<span class="chatnama">'+dl[key]["nama"]+'</span><br>';
+                                datalist += '<span>'+dl[key]["tanggal"]+'</span><br>';
+                                datalist += '</div>';
+                                datalist += '<div class="konsultan-item-status">';
+								
+                                if(dl[key]["finish"]==0)  datalist += '<div class="konsultan-item-status-online" onclick="fade(\'konsultan_chat-start.html?action=read&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')"><i class="fal fa-comment-dots"></i></div>';
+								                else   datalist += '<div class="konsultan-item-status-offline" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')"><i class="fal fa-archive"></i></div>';
+                                datalist += '</div></div>';
+                            }
+                          }
+                          datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein" id="loadmore">';
+                            datalist += '<button class="waves-effect waves-light btn-large accent-color width-100 m-b-20 button button-block button-positive" onclick="load_more('+6+','+ 6+')">Load More</button>';
+                          datalist += '</div>';
+                          $("#load_data").html(datalist);
+                          delete(datalist);
+                        }             
+                        if(datalist == ''){
+                           $('#load_data_message').html("");
+                           action = 'active';
+                        } else {
+                           action = "inactive";
+                        }
+                      }
+                    }
+                  });
+                }
+                function load_more(limit, start) {
+                    document.getElementById("loadmore").remove();
+                    var last = start + 6;
+                    //alert(last);
+                    var urls ="https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-konsultan/"+localStorage.userid+"/"+start+"/"+limit+"/"+1+"/school/?callback=?";
+                    $.ajax({ 
+                    type: "POST",
+                    url: urls,
+                    crossDomain: true,
+                    cache: false,
+                    success: function(data){
+                      if(data['status']=="OK"){
+                        var datalist = "";
+                        var dl = data['datalist'];              
+                        var jml = dl.length;
+                        if(jml>0){
+                          for (var key in dl) {
+                            if (dl.hasOwnProperty(key)) {
+                                datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein" id="'+dl[key]["id"]+'">';
+								if(dl[key]["finish"]==0) { 
+                                	datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-start.html?action=read&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';
+								} else {
+									datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';
+								}
+                                datalist += '<div class="konsultan-item-imgbox"><img src="'+dl[key]["avatar"]+'"></div>';
+                                datalist += '</div>';
+								if(dl[key]["finish"]==0) { 
+                                datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-start.html?action=read&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';
+								} else {
+								datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';	
+								}
+                                datalist += '<span class="chatnama">'+dl[key]["nama"]+'</span><br>';
+                                datalist += '<span>'+dl[key]["tanggal"]+'</span><br>';
+                                datalist += '</div>';
+                                datalist += '<div class="konsultan-item-status">';
+								
+                                if(dl[key]["finish"]==0)  datalist += '<div class="konsultan-item-status-online" onclick="fade(\'konsultan_chat-start.html?action=read&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')"><i class="fal fa-comment-dots"></i></div>';
+								                else   datalist += '<div class="konsultan-item-status-offline" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')"><i class="fal fa-archive"></i></div>';
+                                datalist += '</div></div>';
+                            }
+                          }
+                          datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein" id="loadmore">';
+                            datalist += '<button class="waves-effect waves-light btn-large accent-color width-100 m-b-20 button button-block button-positive" onclick="load_more('+6+','+ last+')">Load More</button>';
+                          $("#load_data").append(datalist);
+                          delete(datalist);
+                        }             
+                        if(datalist == ''){
+                           $('#load_data_message').html("");
+                           action = 'active';
+                        } else {
+                           action = "inactive";
+                        }
+                      }
+                    }
+                  });
+                }
+                $(document).ready(function(){
+              var limit = 6;
+              var start = 0;
+              var action = 'inactive';
+              var lastid = "";        
+              function load_country_data(limit, start){
+                    var urls ="https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-konsultan/"+localStorage.userid+"/"+start+"/"+limit+"/"+1+"/school/?callback=?";
+                    $.ajax({ 
+                    type: "POST",
+                    url: urls,
+                    crossDomain: true,
+                    cache: false,
+                    success: function(data){
+                      if(data['status']=="OK"){
+                        var datalist = "";
+                        var dl = data['datalist'];              
+                        var jml = dl.length;
+                        if(jml>0){
+                          for (var key in dl){
+                            if (dl.hasOwnProperty(key)) {
+                                datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein" id="'+dl[key]["id"]+'">';
+								if(dl[key]["finish"]==0) { 
+                                	datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-start.html?action=read&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';
+								} else {
+									datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';
+								}
+                                datalist += '<div class="konsultan-item-imgbox"><img src="'+dl[key]["avatar"]+'"></div>';
+                                datalist += '</div>';
+								if(dl[key]["finish"]==0) { 
+                                datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-start.html?action=read&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';
+								} else {
+								datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')">';	
+								}
+                                datalist += '<span class="chatnama">'+dl[key]["nama"]+'</span><br>';
+                                datalist += '<span>'+dl[key]["tanggal"]+'</span><br>';
+                                datalist += '</div>';
+                                datalist += '<div class="konsultan-item-status">';
+								
+                                if(dl[key]["finish"]==0)  datalist += '<div class="konsultan-item-status-online" onclick="fade(\'konsultan_chat-start.html?action=read&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')"><i class="fal fa-comment-dots"></i></div>';
+								                else   datalist += '<div class="konsultan-item-status-offline" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid='+dl[key]["id"]+'&userid='+dl[key]["userid"]+'\')"><i class="fal fa-archive"></i></div>';
+                                datalist += '</div></div>';
+
+                            }
+                          }
+                          datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein" id="loadmore">';
+                            datalist += '<button class="waves-effect waves-light btn-large accent-color width-100 m-b-20 button button-block button-positive" onclick="load_more('+6+','+ 6+')">Load More</button>';
+                          datalist += '</div>';
+                          $("#load_data").append(datalist);
+                          delete(datalist);
+                        }             
+                        if(datalist == ''){
+                           $('#load_data_message').html("");
+                           action = 'active';
+                        }else{
+                           action = "inactive";
+                        }
+                      }
+                   }
+                  });
+                   }
+                  
+                   if(action == 'inactive'){
+                  action = 'active';
+                  load_country_data(limit, start);
+                   }
+                  
+                /* $("#content").scroll(function(){
+                    if($("#content").scrollTop() + $("#content").height() > $("#load_data").height() && action == 'inactive')
+                    {
+                   action = 'active';
+                   start = start + limit;
+                   setTimeout(function(){
+                  load_country_data(limit, start);
+                   }, 1000);
+                    }
+                   });*/
+                   
+                  });
+            </script>
+        
+        
+        
+        
+		</div><br><br><div class="steps-controllers">
+              <div  class="waves-effect waves-ripple"><a onclick="javascript:fade('index.html')"><span class="menubuttom"><span class="fal fa-home-alt"></span></span><br>Home</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_chat.html')"><span class="menubuttom"><span class="fal fa-comment-alt-lines"></span></span><br>Chat</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_transaksi.html')"><span class="menubuttom"><span class="fal fa-list-alt"></span></span><br>Transaksi</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_sekolah.html')"  class="active"><span class="menubuttom"><span class="fal fa-building"></span></span><br>Sekolah</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_setting.html')"><span class="menubuttom"><span class="fal fa-cog"></span></span><br>Akun</a></div>
+       </div>
+ </div> <!-- End of Page Container -->
+    
+    <script type="text/javascript" src="cordova.js"></script>
+    <!-- <script src="js/jquery.swipebox.min.js"></script>    -->
+    <script src="js/jquery.smoothState.min.js"></script> 
+    <script src="js/materialize.min.js"></script> 
+    <script src="js/swiper.min.js"></script>  
+    <script src="js/jquery.mixitup.min.js"></script>
+    <script src="js/masonry.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/functions.js"></script>
+ 
+  </body>
+</html>

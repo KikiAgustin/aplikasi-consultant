@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>d'Fun Station</title>
+  <meta content="IE=edge" http-equiv="x-ua-compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="yes" name="apple-touch-fullscreen">
+  <!-- Fonts -->
+  <!-- Icons -->
+
+  <!-- Styles -->
+  <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+  <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+  <link href="css/swiper.css" rel="stylesheet" type="text/css">
+  <link href="css/style1.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <script src="js/jq.js"></script>
+  <script src="js/fastclick.js"></script>
+  <script src="js/sweetalert.min.js"></script>
+  <script type="text/javascript">
+    var url = window.location.pathname;
+    var filename = url.substring(url.lastIndexOf('/') + 1);
+
+
+    if (localStorage.login == "true" && filename == 'login.html') {
+      window.location.href = "index.html";
+      var userfullname = localStorage.userfullname;
+    } else if (localStorage.login == null) {
+      window.location.href = "login.html";
+    } else if (localStorage.login == "false" && filename != 'login.html') {
+      window.location.href = "login.html";
+    }
+  </script>
+  <script type="text/javascript" src="js/iscroll.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+
+
+</head>
+
+<body>
+  <div class="m-scene bg-ff" id="main">
+    <!-- Main Container -->
+
+
+
+    <!-- Page Content -->
+    <div id="content">
+
+      <!-- Toolbar -->
+      <div id="toolbar" class="toolbarhome primary-color">
+
+        <span class="title">Mitra Konsultan</span>
+        <div class="open-right waves-effect waves-circle">
+          <!-- <a href="notifikasi.html" class="waves-effect waves-circle"><i class="fal fa-bell"></i></a> -->
+          <a href="javascript:fade('customerservice.html')" class="waves-effect waves-circle">
+            <i class="fal fa-headset"></i>
+        </div>
+        <div class="open-right waves-effect waves-circle">
+          <!-- <a href="notifikasi.html" class="waves-effect waves-circle"><i class="fal fa-bell"></i></a> -->
+          <a href="#" onclick="refreshx()" class="waves-effect waves-circle"><i class="fal fa-sync"></i></a>
+        </div>
+      </div>
+
+
+
+      <div class="homebox" style="height:100px">
+
+        <div class="menu-profile animated fadein">
+
+        </div>
+
+
+        <script type="text/javascript">
+
+          $(".menu-profile").html("<strong>Hai, " + localStorage.userfullname + "</strong><br><span class=\"greeting\">Semoga berbahagia selalu</span>")
+        </script>
+        <div class="menu-notif">
+
+        </div>
+
+      </div>
+
+
+      <!-- Main Content -->
+      <div class="menuhomebox1 animated fadein" style="height:50px">
+
+        <div style="margin:-30px 0px 0px" class="menuhome-stat1 waves-effect waves-ripple"
+          onClick="slide('konsultan_chat.html');">
+          <div class="menuhome-stat-item"><i class="fal fa-comment-alt"></i></div>
+          <strong><span id="jmlchat">0</span></strong><br>
+          Konsultasi
+        </div>
+        <div style="margin:-30px 0px 0px" class="menuhome-stat2 waves-effect waves-ripple"
+          onClick="slide('konsultan_transaksi.html');">
+          <div class="menuhome-stat-item"><i class="fal fa-list-alt"></i></div>
+          <strong><span id="jmltrans">0</span></strong><br>
+          Transaksi
+        </div>
+
+      </div>
+      <br clear="all">
+      <div class="menuhomebox2 animated fadein m-t-10 m-b-10" style="min-height:70px;height:auto;padding-bottom:0px;">
+        <div class="menuhome-status" style="margin:0px 0px 0px;height:100%">
+          <span id="jadwal">Saat ini Anda sedang <strong>online</strong></span>
+          <span id="statusonline">Saat ini Anda sedang <strong>online</strong></span>
+          <div id="ganti" class="konsultan-item-status-online" onClick="gantistatus();" style="cursor: pointer;">Ganti
+            Status</div>
+        </div>
+        <script>
+
+          function gantistatus() {
+            swal("Apakah anda yakin akan merubah status anda?", {
+              buttons: {
+                cancel: "Batal",
+                catch: {
+                  text: "Ya, Ubah Status",
+                  value: "catch",
+                }
+              },
+            })
+              .then((value) => {
+                switch (value) {
+
+                  case "catch":
+                    var urls = "https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-status-tes/" + localStorage.userid + "/?callback=?";
+                    $.ajax({
+                      type: "GET",
+                      url: urls,
+                      crossDomain: true,
+                      cache: false,
+                      success: function (data) {
+                        if (data['status'] == "OK") {
+                          var online = data['online'];
+                          if (online < 1) { $("#statusonline").html("Saat ini anda sedang <strong style='color:#c8380c'>offline</strong>"); }
+                          else { $("#statusonline").html("Saat ini anda sedang <strong style='color:#6da22b'>online</strong>"); }
+                        }
+                      }
+                    });
+                    break;
+                  default:
+                }
+              });
+            //fade('chat-mulai.html?action=read&userid="+userid+"'
+          }
+
+          $(document).ready(function () {
+
+            var urls = "https://www.dfunstation.com/api4/consultant/index.php/profile/profile/" + localStorage.userid + "/userid/?callback=?";
+
+            $.ajax({
+              type: "GET",
+              url: urls,
+              crossDomain: true,
+              cache: false,
+              success: function (data) {
+                if (data['status'] == "OK") {
+                  let waktu_refresh = data['waktu_refresh'];
+                  setTimeout(function () {
+                    window.location.href = "index.html";
+                  }, waktu_refresh);
+                  var online = data['online'];
+                  //var dayon = data['dayon'];
+                  var show = data['show'];
+                  //var dayoff = data['dayoff'];
+                  var submenu_ = data["dayon"];
+                  var jadwal = "Anda memiliki jadwal hari ini :";
+                  jadwal += "<ul>";
+                  for (var subkey_ in submenu_) {
+                    if (submenu_.hasOwnProperty(subkey_)) {
+                      jadwal += '<li> ' + submenu_[subkey_]["type"] + ' : ' + submenu_[subkey_]["dayon"] + ' WIB s/d ' + submenu_[subkey_]["dayoff"] + ' WIB</li>';
+                    }
+                  }
+                  jadwal += "</ul>";
+                  if (data["dayon"] != " ") {
+                    $("#jadwal").html(jadwal);
+                  } else {
+                    $("#jadwal").html("Anda <strong style='font-weight:bold'>tidak memiliki jadwal konsultasi hari ini</strong>");
+                  }
+                  //alert(show+" "+online);
+                  if (show < 1) { $("#ganti").hide(); }
+                  if (online < 1) { $("#statusonline").html("Saat ini anda sedang <strong style='color:#c8380c'>offline</strong>"); }
+                  else { $("#statusonline").html("Saat ini anda sedang <strong style='color:#6da22b'>online</strong>"); }
+
+                  $("#jmlchat").html(data['jmlchat']);
+                  $("#jmltrans").html(data['jmltrans']);
+
+                }
+              }
+            });
+
+
+          });
+        </script>
+
+      </div>
+      <div class="menuhomebox animated fadein m-t-10 m-b-50" style="padding-top:0px;">
+
+        <div class="menuhome" style="margin-top: 0px;min-height:70px">
+          <h3>Chat Konsultasi Konfirmasi</h3>
+          <div class="listkonsultan0">
+            <div id="load_data0"></div>
+            <div id="load_data_message0">
+              <div class="loading">
+                <center><img src="img/loading.svg" /><br><b>Mohon menunggu</b><br>sedang menyiapkan daftar <br>chat
+                  terbaru</center>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="menuhome" style="margin-top: 20px;">
+          <h3>Chat Konsultasi Umum</h3>
+          <div class="listkonsultan1">
+            <div id="load_data"></div>
+            <div id="load_data_message">
+              <div class="loading">
+                <center><img src="img/loading.svg" /><br><b>Mohon menunggu</b><br>sedang menyiapkan daftar <br>chat
+                  terbaru</center>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="menuhome" style="margin-top:20px !important">
+          <h3>Chat Konsultasi Sekolah</h3>
+          <div class="listkonsultan2">
+            <div id="load_data2"></div>
+            <div id="load_data_message2">
+              <div class="loading">
+                <center><img src="img/loading.svg" /><br><b>Mohon menunggu</b><br>sedang menyiapkan daftar <br>chat
+                  terbaru</center>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="menuhome" style="margin-top: 20px;min-height:150px">
+          <h3>Chat Tidak Terjawab</h3>
+          <div class="listkonsultan3">
+            <div id="load_data3"></div>
+            <div id="load_data_message3">
+              <!-- <div class="loading"> -->
+              <!-- <center><img src="img/loading.svg" /><br><b>Mohon menunggu</b><br>sedang menyiapkan daftar <br>chat
+                  terbaru</center> -->
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <script>
+        let waktuHabis = localStorage.waktu;
+
+        function refreshx() {
+          window.location.href = "index.html";
+        }
+        $(document).ready(function () {
+          var url0 = "https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-konsultan-wait/" + localStorage.userid + "/?callback=?";
+          $.ajax({
+            type: "POST",
+            url: url0,
+            crossDomain: true,
+            cache: false,
+            success: function (data) {
+              if (data['status'] == "OK") {
+                var datalist = "";
+                var dl = data['datalist'];
+                var jml = dl.length;
+                if (jml > 0) {
+                  for (var key in dl) {
+                    if (dl.hasOwnProperty(key)) {
+                      datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein">';
+                      if (dl[key]["finish"] == 0) {
+                        datalist += '<div class="konsultan-item-img" onclick="confirm(\'' + dl[key]["id"] + '\')">';
+                      } else {
+                        datalist += '<div class="konsultan-item-img">';
+                      }
+                      datalist += '<div class="konsultan-item-imgbox"><img src="' + dl[key]["avatar"] + '"></div>';
+                      datalist += '</div>';
+                      if (dl[key]["finish"] == 0) {
+                        datalist += '<div class="konsultan-item-info" onclick="confirm(\'' + dl[key]["id"] + '\')">';
+                      } else {
+                        datalist += '<div class="konsultan-item-info">';
+                      }
+                      datalist += '<span class="chatnama">' + dl[key]["nama"] + ' (' + dl[key]["program"] + ')</span><br>';
+                      datalist += '<span>' + dl[key]["notif"] + '</span><br>';
+                      datalist += '</div>';
+                      datalist += '<div class="konsultan-item-status">';
+
+                      if (dl[key]["finish"] == 0) datalist += '<div class="konsultan-item-status-online" onclick="confirm(\'' + dl[key]["id"] + '\')"><i class="fal fa-check-double"></i></div>';
+                      else datalist += '<div class="konsultan-item-status-offline"><i class="fal fa-times"></i></div>';
+                      datalist += '</div></div>';
+                    }
+                  }
+                  $("#load_data0").append(datalist);
+                  $('#load_data_message0').html("");
+                  delete (datalist);
+                }
+                else {
+                  $('#load_data_message0').html("<center><br><br>Saat ini tidak ada chat terbaru untuk Anda.</center>");
+                }
+              }
+
+
+            }
+          });
+
+          var urls = "https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-konsultan/" + localStorage.userid + "/0/2/0/normal/?callback=?";
+          $.ajax({
+            type: "POST",
+            url: urls,
+            crossDomain: true,
+            cache: false,
+            success: function (data) {
+              if (data['status'] == "OK") {
+                var datalist = "";
+                var dl = data['datalist'];
+                var jml = dl.length;
+                if (jml > 0) {
+                  for (var key in dl) {
+                    if (dl.hasOwnProperty(key)) {
+                      datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein">';
+                      if (dl[key]["finish"] == 0) {
+                        datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-start.html?action=read&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')">';
+                      } else {
+                        datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')">';
+                      }
+                      datalist += '<div class="konsultan-item-imgbox"><img src="' + dl[key]["avatar"] + '"></div>';
+                      datalist += '</div>';
+                      if (dl[key]["finish"] == 0) {
+                        datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-start.html?action=read&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')">';
+                      } else {
+                        datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')">';
+                      }
+                      datalist += '<span class="chatnama">' + dl[key]["nama"] + '</span><br>';
+                      datalist += '<span>' + dl[key]["tanggal"] + '</span><br>';
+                      datalist += '</div>';
+                      datalist += '<div class="konsultan-item-status">';
+
+                      if (dl[key]["finish"] == 0) datalist += '<div class="konsultan-item-status-online" onclick="fade(\'konsultan_chat-start.html?action=read&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')"><i class="fal fa-comment-dots"></i></div>';
+                      else datalist += '<div class="konsultan-item-status-offline" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')"><i class="fal fa-check-double"></i></div>';
+                      datalist += '</div></div>';
+                    }
+                  }
+                  datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein" onclick="fade(\'konsultan_chat.html\')">';
+                  datalist += '<button class="waves-effect waves-light btn-large accent-color width-100 m-b-20 button button-block button-positive">Selengkapnya</button>';
+                  datalist += '</div>';
+                  $("#load_data").append(datalist);
+                  $('#load_data_message').html("");
+                  delete (datalist);
+                }
+                else {
+                  $('#load_data_message').html("<center><br><br>Saat ini tidak ada chat terbaru untuk anda</center>");
+                }
+              }
+
+
+            }
+          });
+
+          var urls2 = "https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-konsultan/" + localStorage.userid + "/0/3/0/school/?callback=?";
+          $.ajax({
+            type: "POST",
+            url: urls2,
+            crossDomain: true,
+            cache: false,
+            success: function (data) {
+              if (data['status'] == "OK") {
+                var datalist = "";
+                var dl = data['datalist'];
+                var jml = dl.length;
+                if (jml > 0) {
+                  for (var key in dl) {
+                    if (dl.hasOwnProperty(key)) {
+                      datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein">';
+                      if (dl[key]["finish"] == 0) {
+                        datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-start.html?action=read&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')">';
+                      } else {
+                        datalist += '<div class="konsultan-item-img" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')">';
+                      }
+                      datalist += '<div class="konsultan-item-imgbox"><img src="' + dl[key]["avatar"] + '"></div>';
+                      datalist += '</div>';
+                      if (dl[key]["finish"] == 0) {
+                        datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-start.html?action=read&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')">';
+                      } else {
+                        datalist += '<div class="konsultan-item-info" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')">';
+                      }
+                      datalist += '<span class="chatnama">' + dl[key]["nama"] + '</span><br>';
+                      datalist += '<span>' + dl[key]["tanggal"] + '</span><br>';
+                      datalist += '</div>';
+                      datalist += '<div class="konsultan-item-status">';
+
+                      if (dl[key]["finish"] == 0) datalist += '<div class="konsultan-item-status-online" onclick="fade(\'konsultan_chat-start.html?action=read&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')"><i class="fal fa-comment-dots"></i></div>';
+                      else datalist += '<div class="konsultan-item-status-offline" onclick="fade(\'konsultan_chat-finish.html?action=finish&chatid=' + dl[key]["id"] + '&userid=' + dl[key]["userid"] + '\')"><i class="fal fa-check-double"></i></div>';
+                      datalist += '</div></div>';
+                    }
+                  }
+                  datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein" onclick="fade(\'konsultan_sekolah.html\')">';
+                  datalist += '<button class="waves-effect waves-light btn-large accent-color width-100 m-b-20 button button-block button-positive">Selengkapnya</button>';
+                  datalist += '</div>';
+                  $("#load_data2").append(datalist);
+                  $('#load_data_message2').html("");
+                  delete (datalist);
+                }
+                else {
+                  $('#load_data_message2').html("<center><br><br>Saat ini tidak ada chat terbaru untuk anda</center>");
+                }
+              }
+
+
+            }
+          });
+
+          // Riwayat konsultasi
+          var urls2 = "https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-konsultan-loked/" + localStorage.userid + "/0/3/0/peer/?callback=?";
+          $.ajax({
+            type: "POST",
+            url: urls2,
+            crossDomain: true,
+            cache: false,
+            success: function (data) {
+              if (data['status'] == "OK") {
+                var datalist = "";
+                var dl = data['datalist'];
+                var jml = dl.length;
+                if (jml > 0) {
+                  for (var key in dl) {
+                    if (dl.hasOwnProperty(key)) {
+                      datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein">';
+                      if (dl[key]["finish"] == 2) {
+                        datalist += '<div class="konsultan-item-img" onclick="deleteRiwayat(\'' + dl[key]["id"] + '\')">';
+                      } else {
+                        datalist += '<div class="konsultan-item-img" >';
+                      }
+                      datalist += '<div class="konsultan-item-imgbox"><img src="' + dl[key]["avatar"] + '"></div>';
+                      datalist += '</div>';
+                      if (dl[key]["finish"] == 2) {
+                        datalist += '<div class="konsultan-item-info" onclick="deleteRiwayat(\'' + dl[key]["id"] + '\')">';
+                      } else {
+                        datalist += '<div class="konsultan-item-info" >';
+                      }
+                      datalist += '<span class="chatnama">' + dl[key]["nama"] + '</span><br>';
+                      datalist += '<span>' + dl[key]["notif"] + '</span><br>';
+                      datalist += '</div>';
+                      datalist += '<div class="konsultan-item-status">';
+
+                      if (dl[key]["finish"] == 2) datalist += '<div class="konsultan-item-status-online" onclick="deleteRiwayat(\'' + dl[key]["id"] + '\')"><i class="fal fa-times"></i></div>';
+                      else datalist += '<div class="konsultan-item-status-offline" ><i class="fal fa-check-double"></i></div>';
+                      datalist += '</div></div>';
+                    }
+                  }
+                  // datalist += '<div class="konsultan-item waves-effect waves-ripple animated fadein" onclick="fade(\'konsultan_sekolah.html\')">';
+                  // datalist += '<button class="waves-effect waves-light btn-large accent-color width-100 m-b-20 button button-block button-positive">Selengkapnya</button>';
+                  // datalist += '</div>';
+                  $("#load_data3").append(datalist);
+                  $('#load_data_message2').html("");
+                  delete (datalist);
+                }
+                else {
+                  $('#load_data_message3').html("<center><br><br>Saat ini tidak ada chat terbaru untuk anda</center>");
+                }
+              }
+            }
+          });
+
+
+        });
+
+        function confirm(i) {
+
+          swal("Apakah Anda yakin akan konfirmasi konsultasi ini?", {
+            buttons: {
+              cancel: "Batal",
+              catch: {
+                text: "Ya, Konfirmasi",
+                value: "catch",
+              }
+            },
+          })
+            .then((value) => {
+              switch (value) {
+                case "catch":
+                  var urls = "https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-confirm/" + i + "/?callback=?";
+                  $.ajax({
+                    type: "GET",
+                    url: urls,
+                    crossDomain: true,
+                    cache: false,
+                    success: function (data) {
+                      if (data['status'] == "OK") {
+                        fade('index.html');
+                      }
+                    }
+                  });
+                  break;
+                default:
+              }
+            });
+        }
+
+        function deleteRiwayat(i) {
+          swal("Anda tidak mengkonfirmasi chat ini, apakah anda ingin menghapusnya dari beranda?", {
+            buttons: {
+              cancel: "Batal",
+              catch: {
+                text: "Hapus",
+                value: "catch",
+              }
+            },
+          })
+            .then((value) => {
+              switch (value) {
+                case "catch":
+                  var urls = "https://www.dfunstation.com/api4/consultant/index.php/konsultasi/delete-riwayat/" + i + "/?callback=?";
+                  $.ajax({
+                    type: "GET",
+                    url: urls,
+                    crossDomain: true,
+                    cache: false,
+                    success: function (data) {
+                      if (data['status'] == "OK") {
+                        fade('index.html');
+                      }
+                    }
+                  });
+                  break;
+                default:
+              }
+            });
+        }
+      </script>
+
+
+
+
+
+
+    </div> <!-- End of Page Container -->
+    <br clear="all"><br clear="all"><br clear="all"><br clear="all"><br clear="all"><br clear="all"><br clear="all"><br
+      clear="all">
+    <div class="steps-controllers">
+      <div class="waves-effect waves-ripple"><a href="javascript:fade('index.html')" class="active"><span
+            class="menubuttom"><span class="fal fa-home-alt"></span></span><br>Home</a></div>
+      <div class="waves-effect waves-ripple"><a href="javascript:fade('konsultan_chat.html')"><span
+            class="menubuttom"><span class="fal fa-comment-alt-lines"></span></span><br>Chat</a></div>
+      <div class="waves-effect waves-ripple"><a href="javascript:fade('konsultan_transaksi.html')"><span
+            class="menubuttom"><span class="fal fa-list-alt"></span></span><br>Transaksi</a></div>
+      <div class="waves-effect waves-ripple"><a href="javascript:fade('konsultan_sekolah.html')"><span
+            class="menubuttom"><span class="fal fa-building"></span></span><br>Sekolah</a></div>
+      <div class="waves-effect waves-ripple"><a href="javascript:fade('konsultan_setting.html')"><span
+            class="menubuttom"><span class="fal fa-cog"></span></span><br>Akun</a></div>
+    </div>
+
+
+
+
+
+
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script src="js/jquery.smoothState.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+    <script src="js/jquery.mixitup.min.js"></script>
+    <script src="js/masonry.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/functions.js"></script>
+
+</body>
+
+</html>

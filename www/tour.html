@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>DfunStation</title>
+    <meta content="IE=edge" http-equiv="x-ua-compatible">
+    <meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <!-- Styles -->
+    <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+    <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+    <link href="css/swiper.css" rel="stylesheet" type="text/css">
+    <link href="css/style1.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    
+    <script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/fastclick.js"></script>
+
+   <script type="text/javascript" src="js/main.js"></script>
+   
+  </head>
+
+  <body>
+    <div class="m-scene" id="main"> <!-- Main Container -->
+      <!-- Page Content -->
+      <div id="content" class="pagetour">
+        <!-- Main Content -->
+        <div class="animated fadein fullscreen">
+        <script>
+			function skip()
+			{
+				localStorage.tour = "1";
+				
+				var userid = localStorage.getItem("userid");
+				var usertipe = localStorage.getItem("usertipe");
+
+				if(usertipe==1){ slide("index.html"); }
+				else if (usertipe==3){ slide("mitra_index.html"); }
+				else if (usertipe==0){ slide("index.html"); }
+			
+			}
+			
+		
+			
+		</script>
+          
+          <!-- Slider -->         
+          <div class="swiper-container slider slider-fullscreen" style="height:100%">
+          	
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <img src="img/tour-1.png" />
+                <br>
+                <center>
+                <span class="tour-title">Konsultasi Berbagai<br>Problematika Anak</span><br>
+                <span class="tour-desc">Anda bisa berkonsultasi ke banyak <br>psikolog, dokter dan juga ahli anak</span>
+                </center>
+              </div>
+              <div class="swiper-slide">
+                 <img src="img/tour-2.png" />
+                <br>
+                <center>
+                <span class="tour-title">Akses Konten<br>Tentang Anak</span><br>
+                <span class="tour-desc">Baca dan akses banyak konten <br>beserta fitur dunia anak dan parenting</span>
+                </center>
+              </div>
+              <div class="swiper-slide">
+                 <img src="img/tour-3.png" />
+                <br>
+                <center>
+                <span class="tour-title">Gabung Komunitas<br>Anak dan Orangtua</span><br>
+                <span class="tour-desc">Lihat berbagai laporan aktifitas komunitas <br> bersama dFun Station</span>
+                </center>
+              </div>
+     			      
+            </div>
+            
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+          <!-- End of Slider -->
+          </div>
+          <span class="skip"><a onclick="javascript:fade('index.html')" id="skip" onClick="skip();">Lewati dan Masuk</a></span>
+        </div> <!-- End of Main Contents -->
+      
+       
+      </div> <!-- End of Page Content -->
+
+    </div> <!-- End of Page Container -->
+    
+    
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <!-- <script src="js/jquery.swipebox.min.js"></script>    -->
+    <script src="js/jquery.smoothState.min.js"></script> 
+    <script src="js/materialize.min.js"></script> 
+    <script src="js/swiper.min.js"></script>  
+    <script src="js/jquery.mixitup.min.js"></script>
+    <script src="js/masonry.min.js"></script>
+    <script src="js/functions.js"></script>
+    <script>
+	var swiper = new Swiper('.slider', {
+		pagination: '.swiper-pagination',
+		paginationClickable: true,
+		nextButton: '.swiper-button-next',
+		prevButton: '.swiper-button-prev',
+		autoplay: 5000,
+		loop: true
+	});
+	</script>
+	</body>
+</html>

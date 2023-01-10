@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>d'Fun Station</title>
+    <meta content="IE=edge" http-equiv="x-ua-compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+
+    <!-- Fonts -->
+    <!-- Styles -->
+    <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+    <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+    <link href="css/swiper.css" rel="stylesheet" type="text/css">
+    <link href="css/style1.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script type="text/javascript">
+    
+	var url = window.location.pathname;
+    var filename = url.substring(url.lastIndexOf('/') + 1);
+	
+ 
+    if (localStorage.login == "true" && filename == 'login.html') {
+        window.location.href = "index.html";
+		var userfullname = localStorage.userfullname;
+    } else if (localStorage.login == null) {
+        window.location.href = "login.html";
+    } else if (localStorage.login == "false" && filename != 'login.html') {
+        window.location.href = "login.html";
+    }
+	</script>
+   <script src="js/sweetalert.min.js"></script> <script type="text/javascript" src="js/main.js"></script>
+
+  <script type="text/javascript" src="js/iscroll.js"></script>
+	
+</head>
+
+  <body>
+    <div class="m-scene" id="main">  
+
+    
+      <!-- Page Content -->
+      <div id="content" class="grey-blue page" style="margin-top:0px !important;padding-top:56px">
+
+        <!-- Toolbar -->
+        <div id="toolbar"  class="primary-color">
+         <a onclick="javascript:fade('konsultan_setting.html');" class="open-left waves-effect waves-circle">
+            <i class="fal fa-arrow-left"></i>
+          </a>
+           <span class="title">Edit Profile</span>
+        </div>
+        
+       
+ 		
+      
+        
+
+         <!-- Main Content -->
+        <div class="animated fadein" id="bloglist">
+        	<div class="p-20">
+            
+               <div class="input-field" style="margin-bottom:20px;">
+               Nama Lengkap<br>
+                <input class="validate" id="userfullname" type="text"   required> 
+              </div>
+               <div class="input-field" style="margin-bottom:20px;">
+               Profile Singkat<br>
+                <input class="validate" id="userabout" type="text"  required> 
+              </div>
+              <div class="input-field" style="margin-bottom:20px;">
+                Tanggal Lahir<br>
+                <input class="validate" id="userdob" type="date"  required> 
+              </div>
+              <div class="input-field" style="margin-bottom:20px;">
+                Alamat Lengkap<br>
+                <input class="validate" id="useraddress" type="text"  required> 
+              </div>
+               <div class="input-field" style="margin-bottom:20px;">
+                Email Address<br>
+                <input class="validate" id="useremail" type="text"  required> 
+              </div>
+               <div class="input-field" style="margin-bottom:20px;">
+                Nomor Handphone<br>
+                <input class="validate" id="userphonegsm" type="text"  required> 
+              </div>
+              
+               <button class="waves-effect waves-light btn-large accent-color width-100 m-b-20 animated bouncein delay-4 button button-block button-positive" id="gantiprofile">Simpan Profile</button>
+               
+            </div>
+        </div>
+        
+		</div>
+        
+          <script> 
+       		 $(document).ready(function(){
+				var urls ="https://www.dfunstation.com/api4/consultant/index.php/profile/profile/"+localStorage.userid+"/?callback=?";
+			  	$.ajax({
+				  type: "GET",
+				  url: urls,
+				  crossDomain: true,
+				  cache: false,
+				  success: function(data){
+					  if(data['status']=="OK")
+					  {
+						$(".topmenu-poin").html(data['point']+" Poin");
+						$(".jmlpoint").html(data['point']);
+						$(".jmlnotif").html(data['jmlnotif']);
+						$("#userfullname").val(data['userfullname']);
+						$("#userdob").val(data['userdob']);
+						$("#useraddress").val(data['useraddress']);
+						$("#useremail").val(data['useremail']);
+						$("#userphonegsm").val(data['userphonegsm']);
+						$("#userabout").val(data['userabout']);
+					  }
+				 }
+			  });
+        
+         
+        });
+        </script>
+        
+        
+		<script>
+        $(document).ready(function(){
+           
+        	 var urls="https://www.dfunstation.com/api4/consultant/index.php/member/setting/?callback=?";
+			 
+            //Change Password
+            $("#gantiprofile").click(function(){
+               
+			  
+				var userfullname = $("#userfullname").val();
+                var userdob = $("#userdob").val();
+				var useraddress = $("#useraddress").val();
+				var useremail = $("#useremail").val();
+                var userphonegsm = $("#userphonegsm").val();
+				var userabout = $("#userabout").val();
+				
+				if($.trim(userfullname).length<3)
+				{
+					alert("Nama lengkap anda masih kosong");
+					return false;
+				}
+				
+				
+                var dataString="userfullname="+userfullname+"&userdob="+userdob+"&useraddress="+useraddress+"&useremail="+useremail+"&userphonegsm="+userphonegsm+"&userabout="+userabout+"&userid="+localStorage.userid;
+                
+				if($.trim(userfullname).length>0 & $.trim(useremail).length>0)
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: urls,
+                        data: dataString,
+                        crossDomain: true,
+                        cache: false,
+                        beforeSend: function(){ $("#gantiprofile").val('Connecting...');},
+                        success: function(data){
+						 if(data['status']=="OK")
+						  {
+							alert(data['message']);
+							slide("konsultan_setting.html");
+						  }
+						  else
+						  {
+							alert(data['message']);
+							return false;
+						  }
+					  
+                        }
+                    });
+                }return false;
+        
+            });
+        
+          
+        });
+                </script><br><br><<div class="steps-controllers">
+              <div  class="waves-effect waves-ripple"><a onclick="javascript:fade('index.html')"><span class="menubuttom"><span class="fal fa-home-alt"></span></span><br>Home</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_chat.html')"><span class="menubuttom"><span class="fal fa-comment-alt-lines"></span></span><br>Chat</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_transaksi.html')"><span class="menubuttom"><span class="fal fa-list-alt"></span></span><br>Transaksi</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_profile.html')"><span class="menubuttom"><span class="fal fa-user"></span></span><br>Profil</a></div>
+              <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_setting.html')" class="active"><span class="menubuttom"><span class="fal fa-cog"></span></span><br>Akun</a></div>
+       </div>
+ </div> <!-- End of Page Container -->
+    
+    <script type="text/javascript" src="cordova.js"></script>
+    <!-- <script src="js/jquery.swipebox.min.js"></script>    -->
+    <script src="js/jquery.smoothState.min.js"></script> 
+    <script src="js/materialize.min.js"></script> 
+    <script src="js/swiper.min.js"></script>  
+    <script src="js/jquery.mixitup.min.js"></script>
+    <script src="js/masonry.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/functions.js"></script>
+ 
+  </body>
+</html>

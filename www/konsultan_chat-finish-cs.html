@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>d'Fun Station</title>
+  <meta content="IE=edge" http-equiv="x-ua-compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="yes" name="apple-touch-fullscreen">
+
+  <!-- Fonts -->
+  <!-- Styles -->
+  <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+  <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+  <link href="css/swiper.css" rel="stylesheet" type="text/css">
+  <link href="css/style1.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <script src="js/fastclick.js"></script>
+  <script type="text/javascript">
+
+    var url = window.location.pathname;
+    var filename = url.substring(url.lastIndexOf('/') + 1);
+
+
+    if (localStorage.login == "true" && filename == 'login.html') {
+      window.location.href = "index.html";
+      var userfullname = localStorage.userfullname;
+    } else if (localStorage.login == null) {
+      window.location.href = "login.html";
+    } else if (localStorage.login == "false" && filename != 'login.html') {
+      window.location.href = "login.html";
+    }
+  </script>
+  <script src="js/sweetalert.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      var chatid = getvar("chatid");
+      var us = getvar("userid");
+      var urls = "https://www.dfunstation.com/api4/consultant/index.php/konsultasi/chat-finish-cs/" + chatid + "/" + localStorage.userid + "/" + us + "/?callback=?";
+      $.ajax({
+        type: "GET",
+        url: urls,
+        crossDomain: true,
+        cache: false,
+        success: function (data) {
+
+          if (data['status'] == "OK") {
+            $("#avatar").attr("src", data['avatar']);
+            $("#kons").html(data['konsultan']);
+            $("#name-area").html(data['create']);
+          }
+
+        }
+      });
+
+    });
+
+  </script>
+  <script type="text/javascript" src="js/iscroll.js"></script>
+  <script type="text/javascript" src="js/main-chat-cs.js"></script>
+
+</head>
+
+<body>
+  <div class="m-scene" id="main">
+    <div id="content" class="grey-blue page"
+      style="margin-top:0px !important;padding-top:56px;background: #efe7dd url('img/wa.jpg') repeat;background-size: cover;">
+
+      <!-- Toolbar -->
+      <div id="toolbar" class="primary-color">
+        <a onclick="javascript:fade('konsultan_chat.html')" class="open-left waves-effect waves-circle">
+          <i class="fal fa-arrow-left"></i>
+        </a>
+        <img id="avatar" class="circle avatar" src="img/avatar.png" alt="" style="margin-top:5px;float:left" />
+        <span id="kons"
+          style="margin-left:10px;color:white;font-size:18px;font-weight:bold;line-height:50px">Chat</span>
+      </div>
+
+      <!-- Main Content -->
+
+      <!-- Main Content -->
+      <div class="animated fadeinup">
+        <div class="row">
+          <div class="col s12">
+
+
+            <p id="name-area" style="padding:5px;text-align:center;font-weight:bold;margin:0px !important"></p>
+
+            <div id="chat-wrap">
+              <div class="chat">
+                <ul id="chat-area" class="chat-area" style="padding-bottom:50px !important">
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <br clear="all"><br clear="all">
+
+    </div>
+
+  </div>
+  </div> <!-- End of Page Container -->
+
+  <script>
+    $(document).ready(function () {
+      var h = $(window).innerHeight();
+      var tinggi = h - 132;
+      $("#chat-area").height(tinggi);
+    });
+  </script>
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script src="js/jquery.swipebox.min.js"></script>
+  <script src="js/jquery.smoothState.min.js"></script>
+  <script src="js/materialize.min.js"></script>
+  <script src="js/swiper.min.js"></script>
+  <script src="js/jquery.mixitup.min.js"></script>
+  <script src="js/masonry.min.js"></script>
+  <script src="js/chart.min.js"></script>
+  <script src="js/functions.js"></script>
+
+</body>
+
+</html>

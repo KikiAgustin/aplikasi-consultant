@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>DFun Station</title>
+    <meta content="IE=edge" http-equiv="x-ua-compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <!-- Fonts -->
+    <!-- Styles -->
+  <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+  <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+  <link href="css/swiper.css" rel="stylesheet" type="text/css">
+  <link href="css/style1.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <script src="js/jq.js"></script>
+  <script src="js/fastclick.js"></script>
+  <script src="js/sweetalert.min.js"></script>
+  <script type="text/javascript">
+    var url = window.location.pathname;
+    var filename = url.substring(url.lastIndexOf('/') + 1);
+
+
+    if (localStorage.login == "true" && filename == 'login.html') {
+      window.location.href = "index.html";
+      var userfullname = localStorage.userfullname;
+    } else if (localStorage.login == null) {
+      window.location.href = "login.html";
+    } else if (localStorage.login == "false" && filename != 'login.html') {
+      window.location.href = "login.html";
+    }
+  </script>
+  <script type="text/javascript" src="js/iscroll.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</head>
+
+<body>
+    <div class="m-scene" id="main">
+        <!-- Main Container -->
+
+        <!-- Page Content -->
+        <div id="content" class="grey-blue page" style="margin-top:0px !important;padding-top:56px">
+
+            <!-- Toolbar -->
+            <div id="toolbar" class="primary-color">
+
+                <span class="title">Masukan Kode Voucher</span>
+                <div class="open-left waves-effect waves-circle">
+                    <a onclick="javascript:history.back()"><i class="fal fa-arrow-left"></i></a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="login-form animated fadein delay-2" style="top:0px" id="scan">
+                
+                <div class="padding" style="margin-top:50px;" id="clm">
+                    <div class="padding" style="margin:20px 0px 20px 0px;">
+                        <center> Silakan masukan kode Voucher :</center>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input class="validate" id="voucher" type="text" placeholder="Masukan Voucher" required> 
+                            </div>
+                            
+                          </div>
+                    </div>
+                    <button class="waves-effect waves-light btn-large accent-color width-100 m-b-20 animated bouncein delay-4 button button-block button-positive" id="btnvoucher">Tukar Voucher</button>
+                </div>
+
+            </div> <!-- End of Main Contents -->
+
+        </div> <!-- End of Page Content --><br><br>
+        <br clear="all"><br clear="all"><br clear="all"><br clear="all"><br clear="all"><br clear="all"><br clear="all"><br
+      clear="all">
+    <div class="steps-controllers">
+      <div class="waves-effect waves-ripple"><a onclick="javascript:fade('index.html')" class="active"><span
+            class="menubuttom"><span class="fal fa-home-alt"></span></span><br>Home</a></div>
+      <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_chat.html')"><span
+            class="menubuttom"><span class="fal fa-comment-alt-lines"></span></span><br>Chat</a></div>
+      <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_transaksi.html')"><span
+            class="menubuttom"><span class="fal fa-list-alt"></span></span><br>Transaksi</a></div>
+      <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_sekolah.html')"><span
+            class="menubuttom"><span class="fal fa-building"></span></span><br>Sekolah</a></div>
+      <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_setting.html')"><span
+            class="menubuttom"><span class="fal fa-cog"></span></span><br>Akun</a></div>
+    </div>
+    </div> <!-- End of Page Container -->
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script src="js/jquery.smoothState.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+    <script src="js/jquery.mixitup.min.js"></script>
+    <script src="js/masonry.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/functions.js"></script>
+    <script type="text/javascript" src="controller/membersekolah.js"></script>
+</body>
+
+</html>

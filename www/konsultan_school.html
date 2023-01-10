@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>d'Fun Station</title>
+  <meta content="IE=edge" http-equiv="x-ua-compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="yes" name="apple-touch-fullscreen">
+  <!-- Fonts -->
+  <!-- Icons -->
+
+  <!-- Styles -->
+  <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+  <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+  <link href="css/swiper.css" rel="stylesheet" type="text/css">
+  <link href="css/style1.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="js/fastclick.js"></script>
+  <script type="text/javascript" src="js/iscroll.js"></script>
+  <script type="text/javascript" src="js/sweetalert.min.js"></script> 
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/iscroll.js"></script>
+  <script type="text/javascript" src="controller/konsultan_school.js"></script>
+</head>
+
+<body>
+  <div class="m-scene bg-ff" id="main">
+    <!-- Main Container -->
+      <div id="content" class="grey-blue page" style="margin-top:0px !important;padding-top:56px;">
+
+        <!-- Toolbar -->
+        <div id="toolbar"  class="primary-color">
+         <a onclick="javascript:fade('index.html');" class="open-left waves-effect waves-circle">
+            <i class="fal fa-arrow-left"></i>
+          </a>
+           <span class="title">Sekolah</span>
+           <div class="open-right waves-effect waves-circle">
+                  <a href="#" onclick="reset('6','0')" class="waves-effect waves-circle"><i class="fal fa-sync"></i></a>
+           </div>
+        </div>
+
+        <div class="tabs">
+          <div class="tab waves-effect waves-ripple" onClick="javascript:fade('konsultan_sekolah.html');">Aktif</div>
+          <div class="tab waves-effect waves-ripple" onClick="javascript:fade('konsultan_sekolah_arsip.html');">Arsip</div>
+      <div class="tab tab-active waves-effect waves-ripple" onClick="javascript:fade('konsultan_school.html');">Group</div>
+      <div class="tab waves-effect waves-ripple" onClick="javascript:fade('konsultan_mading.html');">Mading</div>
+        </div>
+		<div id="listkonsultan"></div>
+	  
+      </div> <!-- End of Page Content -->
+
+    </div> <!-- End of Page Container -->
+<br><br>
+<div class="steps-controllers">
+  <div  class="waves-effect waves-ripple"><a onclick="javascript:fade('index.html')"><span class="menubuttom"><span class="fal fa-home-alt"></span></span><br>Home</a></div>
+  <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_chat.html')"><span class="menubuttom"><span class="fal fa-comment-alt-lines"></span></span><br>Chat</a></div>
+  <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_transaksi.html')"><span class="menubuttom"><span class="fal fa-list-alt"></span></span><br>Transaksi</a></div>
+  <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_sekolah.html')" class="active"><span class="menubuttom"><span class="fal fa-building"></span></span><br>Sekolah</a></div>
+  <div class="waves-effect waves-ripple"><a onclick="javascript:fade('konsultan_setting.html')"><span class="menubuttom"><span class="fal fa-cog"></span></span><br>Akun</a></div>
+</div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script src="js/jquery.smoothState.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+    <script src="js/jquery.mixitup.min.js"></script>
+    <script src="js/masonry.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/functions.js"></script>
+
+</body>
+
+</html>

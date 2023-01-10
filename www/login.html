@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>d'Fun Station</title>
+    <meta content="IE=edge" http-equiv="x-ua-compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <!-- Styles -->
+    <link href="css/keyframes.css" rel="stylesheet" type="text/css">
+    <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+    <link href="css/swiper.css" rel="stylesheet" type="text/css">
+    <link href="css/style1.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+   <script src="js/sweetalert.min.js"></script> <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/iscroll.js"></script>
+  	<script type="text/javascript">
+
+	var userid = localStorage.getItem("userid");
+	var usertipe = localStorage.getItem("usertipe");
+	
+	if(userid!== null) {
+	  if(usertipe=="1"){ slide("index.html"); }
+	  else { slide("index.html"); }
+    }
+	
+	
+    var myScroll;
+    function loaded () {
+        myScroll = new IScroll('#content', { mouseWheel: true });
+    }
+    </script>
+</head>
+
+    <body style="background: #5c8c20 !important;"> 
+    <div class="m-scene" id="main-login">
+
+      
+      <!-- Page Content -->
+      <div id="content-login" class="login" style="background: url(img/bg.main.png) bottom center repeat-x #5c8c20;">
+		
+        <div id="toolbar" class="animated fadein" style="background:none; background-color:none !important;">
+          <a onclick="javascript:fade('index.html')" class="open-left waves-effect waves-circle">
+            <i class="fal fa-arrow-left"></i>
+          </a>
+        </div>
+
+      
+        
+        <div class="logo-apps animated fadein delay-2"><img src="img/img.logo.png" /></div>
+        <!-- Main Content -->
+        <div class="login-form animated fadein delay-2 z-depth-1">
+       
+        	         
+           <div class="input-field">
+            <i class="fal fa-user prefix"></i> 
+            <input class="validate" id="username" type="text" placeholder="Username atau email" required> 
+          </div>
+          <div class="input-field" style="margin-bottom:20px;">
+            <i class="fal fa-key prefix"></i> 
+            <input class="validate" id="password" type="password"  placeholder="Password" required> 
+             <span  onClick="SeePass();" class="fal fa-eye field-icon toggle-password"></span>
+          </div>
+           <button class="waves-effect waves-light btn-large accent-color width-100 m-b-20 animated bouncein delay-4 button button-block button-positive" id="login">Login Sekarang</button>
+           <center>
+           <span>Anda lupa password? <a class="primary-text" onclick="javascript:fade('lupapassword.html')">Ganti Password</a></span>
+           </center>
+        </div><!-- End of Main Contents -->
+      
+       
+      </div> <!-- End of Page Content -->
+
+   
+ </div> <!-- End of Page Container -->
+    
+     <script>
+		function SeePass() {
+		  var x = document.getElementById("password");
+		  if (x.type === "password") {
+			x.type = "text";
+		  } else {
+			x.type = "password";
+		  }
+		}
+	</script>
+    <script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/fastclick.js"></script>
+    <script type="text/javascript" src="js/auth.js"></script>
+    <!-- <script src="js/jquery.swipebox.min.js"></script>    -->
+    <script src="js/jquery.smoothState.min.js"></script> 
+    <script src="js/materialize.min.js"></script> 
+    <script src="js/swiper.min.js"></script>  
+    <script src="js/jquery.mixitup.min.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="cordova.js"></script>
+  </body>
+</html>
